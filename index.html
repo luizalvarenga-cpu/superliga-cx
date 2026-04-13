@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Superliga CX – AZOS</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+
+  :root {
+    --verde: #00cc44;
+    --verde-escuro: #006622;
+    --verde-neon: #11ff55;
+    --roxo: #9b79ff;
+    --roxo-escuro: #3a1f7a;
+    --rosa: #ff4faa;
+    --preto: #111111;
+    --preto2: #1a1a1a;
+    --branco: #f5f5f0;
+    --cinza: #888880;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--preto);
+    color: var(--branco);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* ── UTILIDADES ── */
+  .page {
+    width: 100%;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 80px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page + .page { border-top: 1px solid #2a2a2a; }
+
+  .label-topo {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cinza);
+    margin-bottom: 12px;
+  }
+
+  .azos-logo {
+    font-size: 15px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    color: var(--verde);
+    text-transform: uppercase;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+
+  .tag-verde { background: var(--verde); color: var(--preto); }
+  .tag-roxo  { background: var(--roxo);  color: var(--preto); }
+  .tag-rosa  { background: var(--rosa);  color: var(--preto); }
+
+  h1 { font-size: clamp(42px, 7vw, 72px); font-weight: 900; line-height: 1; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(28px, 5vw, 44px); font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; }
+  h3 { font-size: 20px; font-weight: 700; line-height: 1.3; }
+
+  p { font-size: 16px; line-height: 1.8; color: #cccccc; }
+
+  .destaque { color: var(--verde); }
+  .destaque-roxo { color: var(--roxo); }
+  .destaque-rosa { color: var(--rosa); }
+
+  /* ── RAIO / DECORAÇÃO ── */
+  .raio-bg {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 480px; height: 480px;
+    opacity: 0.07;
+    pointer-events: none;
+  }
+
+  /* ── CAPA ── */
+  .capa {
+    background: var(--preto2);
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .capa-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .capa-titulo {
+    margin: 48px 0 24px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .capa-titulo h1 span {
+    display: block;
+    color: var(--verde);
+  }
+
+  .capa-subtitulo {
+    font-size: 18px;
+    font-weight: 400;
+    color: #aaaaaa;
+    margin-top: 16px;
+  }
+
+  .capa-barra {
+    height: 4px;
+    background: var(--verde);
+    width: 100%;
+    margin-top: 48px;
+  }
+
+  /* ── CARDS NUMERADOS ── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 40px;
+  }
+
+  .card {
+    background: #1e1e1e;
+    border: 1px solid #2c2c2c;
+    border-radius: 4px;
+    padding: 28px 24px;
+    position: relative;
+  }
+
+  .card-num {
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1;
+    color: #2a2a2a;
+    position: absolute;
+    top: 16px; right: 20px;
+  }
+
+  .card h3 { margin-bottom: 10px; font-size: 17px; }
+  .card p  { font-size: 14px; color: #999; }
+
+  /* ── STAT BLOCKS ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .stat-box {
+    background: #1e1e1e;
+    border: 1px solid #2c2c2c;
+    border-radius: 4px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 42px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: #888;
+    line-height: 1.4;
+  }
+
+  /* ── LINHA TIMELINE ── */
+  .timeline {
+    margin-top: 40px;
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 8px;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--verde), var(--roxo));
+  }
+
+  .timeline-item {
+    margin-bottom: 36px;
+    position: relative;
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -38px; top: 6px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--verde);
+    border: 2px solid var(--preto2);
+  }
+
+  .timeline-ano {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--verde);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .timeline-item h3 { font-size: 16px; margin-bottom: 6px; }
+  .timeline-item p  { font-size: 14px; color: #999; }
+
+  /* ── APOSTOLO CARDS ── */
+  .apostolo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .ap-card {
+    border-radius: 4px;
+    padding: 24px 22px;
+    position: relative;
+  }
+
+  .ap-card .ap-icone {
+    font-size: 28px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .ap-card h3 { font-size: 18px; margin-bottom: 8px; }
+  .ap-card p  { font-size: 13px; line-height: 1.6; }
+  .ap-card .ap-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-bottom: 12px;
+  }
+
+  .ap-apostolo  { background: #0d2e1a; border: 1px solid #1a5c30; }
+  .ap-mercenario{ background: #1e1a0d; border: 1px solid #4a3e10; }
+  .ap-refem     { background: #1a0d1e; border: 1px solid #3e1050; }
+  .ap-desertor  { background: #2e0d0d; border: 1px solid #5c1a1a; }
+
+  .ap-apostolo  .ap-tag { background: #1a5c30; color: #7fffaa; }
+  .ap-mercenario .ap-tag { background: #4a3e10; color: #ffd966; }
+  .ap-refem     .ap-tag { background: #3e1050; color: #d099ff; }
+  .ap-desertor  .ap-tag { background: #5c1a1a; color: #ff9999; }
+
+  /* ── SUPERPODERES ── */
+  .poder-lista {
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .poder-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    background: #1a1a1a;
+    border-left: 3px solid var(--verde);
+    border-radius: 0 4px 4px 0;
+    padding: 18px 20px;
+  }
+
+  .poder-item.roxo { border-left-color: var(--roxo); }
+  .poder-item.rosa { border-left-color: var(--rosa); }
+
+  .poder-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--verde);
+    min-width: 120px;
+    padding-top: 2px;
+  }
+
+  .poder-item.roxo .poder-label { color: var(--roxo); }
+  .poder-item.rosa .poder-label { color: var(--rosa); }
+
+  .poder-texto {
+    font-size: 15px;
+    color: #cccccc;
+    line-height: 1.6;
+  }
+
+  /* ── QUOTE ── */
+  .quote-block {
+    border-left: 3px solid var(--verde);
+    padding: 20px 28px;
+    margin: 36px 0;
+    background: #161616;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .quote-block p {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--branco);
+    line-height: 1.5;
+  }
+
+  .quote-block .fonte {
+    font-size: 13px;
+    color: var(--cinza);
+    margin-top: 10px;
+  }
+
+  /* ── TABELA ── */
+  .tabela-wrap { margin-top: 32px; overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead tr { border-bottom: 2px solid var(--verde); }
+  thead th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--verde);
+    font-weight: 700;
+  }
+
+  tbody tr { border-bottom: 1px solid #252525; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody td { padding: 12px 14px; color: #ccc; }
+  tbody td:first-child { color: var(--branco); font-weight: 600; }
+
+  /* ── ENCERRAMENTO ── */
+  .encer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 40px;
+  }
+
+  .encer-card {
+    background: #1a1a1a;
+    border: 1px solid #2c2c2c;
+    border-radius: 4px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+
+  .encer-card .numero {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--verde);
+    margin-bottom: 8px;
+  }
+
+  .encer-card p { font-size: 13px; color: #888; }
+
+  .selo-final {
+    margin: 48px auto 0;
+    width: 200px; height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #1a1a1a;
+    border: 3px solid var(--verde);
+    border-radius: 50%;
+    text-align: center;
+  }
+
+  .selo-final .s-tag {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--verde);
+    margin-bottom: 8px;
+  }
+
+  .selo-final h3 {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--branco);
+    line-height: 1.2;
+  }
+
+  .selo-final .s-sub {
+    font-size: 10px;
+    color: var(--cinza);
+    margin-top: 6px;
+  }
+
+  /* ── DIVISOR ── */
+  .divisor {
+    height: 1px;
+    background: #252525;
+    margin: 48px 0;
+  }
+
+  /* ── INTRO SECTION TITLE ── */
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .section-num {
+    font-size: 80px;
+    font-weight: 900;
+    color: #252525;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .section-info { padding-top: 8px; }
+
+  /* ── RODAPÉ ── */
+  .rodape {
+    padding: 20px 48px;
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #1e1e1e;
+  }
+
+  .rodape span { font-size: 11px; color: #444; letter-spacing: 0.08em; }
+
+  @media (max-width: 600px) {
+    .page { padding: 48px 24px; }
+    .cards-grid, .apostolo-grid, .stats-row, .encer-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 38px; }
+    h2 { font-size: 26px; }
+  }
+
+  @media print {
+    body { background: #fff; color: #111; }
+    .page { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- CAPA                                       -->
+<!-- ══════════════════════════════════════════ -->
+<div class="page capa">
+
+  <svg class="raio-bg" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="240,0 260,200 480,180 280,240 480,300 260,280 240,480 220,280 0,300 200,240 0,180 220,200" fill="#00cc44"/>
+  </svg>
+
+  <div class="capa-topo">
+    <div class="azos-logo">AZOS</div>
+    <div class="label-topo">Material de engajamento · Time CX</div>
+  </div>
+
+  <div class="capa-titulo">
+    <div class="tag tag-verde">Superliga CX</div>
+    <h1>
+      O poder <br>
+      <span>invisível</span><br>
+      do pós-venda
+    </h1>
+    <p class="capa-subtitulo">
+      Por que atender bem não é só gentileza —<br>
+      é a estratégia mais lucrativa de qualquer seguradora.
+    </p>
+  </div>
+
+  <div class="capa-barra"></div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- INTRODUÇÃO                                 -->
+<!-- ══════════════════════════════════════════ -->
+<div class="page">
+  <div class="tag tag-verde">Para começar</div>
+
+  <h2>Você está <span class="destaque">na linha de frente</span> do que mais importa</h2>
+
+  <div class="divisor"></div>
+
+  <p>
+    Existe uma verdade que quase ninguém conta com clareza para quem trabalha em atendimento: 
+    <strong style="color:var(--branco)">o trabalho que você faz todos os dias é, literalmente, a maior vantagem competitiva de uma seguradora.</strong>
+  </p>
+
+  <br>
+      <p>
+    Não é o produto. Não é o preço. Não é o marketing.
+    É a pessoa que atende, com atenção, com clareza, com presença, que decide se um cliente fica ou vai embora.
+  </p>
+
+  <br>
+  <p>
+    Este ebook foi criado para você entender o contexto maior do seu papel:
+    de onde veio a ideia de "cuidar do cliente depois da venda", o que os números dizem sobre isso,
+    e como os seus superpoderes do dia a dia se traduzem em resultados reais para a AZOS e para quem está do outro lado da linha.
+  </p>
+
+  <div class="quote-block" style="margin-top: 40px;">
+    <p>"Imediatamente após a venda, é necessário injetar muito mais esforço para não colocar a perder todo o trabalho da fase de aquisição."</p>
+    <div class="fonte">— Princípio do Customer Success, Harvard Business Review</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- CAP 1 · HISTÓRIA                          -->
+<!-- ══════════════════════════════════════════ -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-num">01</div>
+    <div class="section-info">
+      <div class="tag tag-verde">A origem</div>
+      <h2>Uma história de <span class="destaque">3.000 anos</span></h2>
+    </div>
+  </div>
+
+  <p>
+    A ideia de cuidar do cliente depois da compra é tão antiga quanto o comércio.
+    Mas foi só no século XX que o mundo corporativo entendeu que isso precisava de estrutura — e, acima de tudo, de pessoas dedicadas a isso.
+  </p>
+
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:var(--cinza)"></div>
+      <div class="timeline-ano">3000 a.C.</div>
+      <h3>A confiança como produto</h3>
+      <p>Comerciantes do Mediterrâneo já percebiam que a reputação boca a boca era o único mecanismo de retenção disponível. Quem entregava bem, continuava vendendo.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-ano">1868</div>
+      <h3>A primeira garantia formal</h3>
+      <p>A Watkins Liniment cria a primeira política de devolução de dinheiro da história empresarial — sinalizando que o relacionamento não acaba no caixa.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-ano">1960s</div>
+      <h3>IBM: o serviço como diferencial</h3>
+      <p>A IBM percebe que vender computadores mainframe era só o começo. Suporte técnico, treinamento e manutenção formam um ecossistema que torna quase impossível trocar de fornecedor — criando lealdade estrutural.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:var(--verde-neon)"></div>
+      <div class="timeline-ano">1960s</div>
+      <h3>Rolls-Royce: pagar pelo resultado, não pela peça</h3>
+      <p>Cobrar pelas horas em que o motor opera perfeitamente, e não por consertos. O fabricante passa a lucrar <em>com o sucesso do cliente</em>, não com as falhas dele. Contratos de até 27 anos de relacionamento.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:var(--roxo)"></div>
+      <div class="timeline-ano">1996</div>
+      <h3>Nasce o "Customer Success"</h3>
+      <p>A empresa de software Vantive cria o primeiro departamento formal de Sucesso do Cliente da história. O gatilho? A descoberta de que a receita real vinha de manter clientes, não apenas de conquistar novos. A missão muda de "resolver problemas" para "garantir que o cliente alcance seus objetivos".</p>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- CAP 2 · MATEMÁTICA DA RETENÇÃO            -->
+<!-- ══════════════════════════════════════════ -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-num">02</div>
+    <div class="section-info">
+      <div class="tag tag-roxo">Os números</div>
+      <h2>A matemática que ninguém te ensinou</h2>
+    </div>
+  </div>
+
+  <p>
+    Seguros têm o mais alto custo de aquisição de clientes de qualquer setor da economia.
+    Isso não é opinião — é o que estudos da Harvard Business Review, Bain & Company e
+    J.D. Power mostram de forma consistente.
+  </p>
+
+  <div class="stats-row">
+    <div class="stat-box">
+      <div class="stat-num" style="color:var(--verde)">7–9×</div>
+      <div class="stat-label">mais caro conquistar um cliente novo do que manter um existente no setor de seguros</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" style="color:var(--roxo)">+5–95%</div>
+      <div class="stat-label">de aumento nos lucros com apenas <strong style="color:#ccc">5% a mais</strong> de retenção de clientes</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" style="color:var(--rosa)">58%</div>
+      <div class="stat-label">dos clientes de seguradoras nos EUA ficam mais de 3 anos sem interação significativa com a empresa</div>
+    </div>
+  </div>
+
+  <div class="divisor"></div>
+
+  <h3 style="margin-bottom: 20px; color:var(--branco)">O que custa atrair vs. manter</h3>
+
+  <div class="tabela-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Modelo de operação</th>
+          <th>Custo médio de aquisição (CAC)</th>
+          <th>Custo de uma ligação de retenção</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Seguradoras diretas (digital)</td>
+          <td style="color:var(--rosa)">~R$ 2.500</td>
+          <td style="color:var(--verde)">R$ 25–50</td>
+        </tr>
+        <tr>
+          <td>Seguradoras com força própria</td>
+          <td style="color:var(--rosa)">~R$ 4.000</td>
+          <td style="color:var(--verde)">R$ 25–50</td>
+        </tr>
+        <tr>
+          <td>Corretoras independentes</td>
+          <td style="color:var(--rosa)">~R$ 4.500</td>
+          <td style="color:var(--verde)">R$ 25–50</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="quote-block" style="margin-top: 40px;">
+    <p>Cada cliente que sai representa não só a perda das receitas futuras — representa a falha completa em amortizar o investimento já feito para trazê-lo.</p>
+    <div class="fonte">— Adaptado de análises de custo-benefício em seguros de vida (Bain & Co.)</div>
+  </div>
+
+  <div class="divisor"></div>
+
+  <h3 style="margin-bottom: 16px; color:var(--branco)">O efeito multiplicador das indicações</h3>
+  <p>
+    Clientes que chegam por indicação de outros clientes satisfeitos têm um perfil completamente diferente:
+  </p>
+
+  <div class="cards-grid" style="margin-top: 24px;">
+    <div class="card">
+      <div class="card-num">5×</div>
+      <h3 style="color:var(--verde)">Mais receita no primeiro ano</h3>
+      <p>Um cliente indicado gera, em média, cinco vezes mais receita global do que um cliente conquistado por canais frios.</p>
+    </div>
+    <div class="card">
+      <div class="card-num">92%</div>
+      <h3 style="color:var(--verde)">Taxa de retenção em 3 anos</h3>
+      <p>Contra 67% dos clientes vindos de mídia paga — uma vantagem de 25 pontos percentuais que se acumula ano a ano.</p>
+    </div>
+  </div>
+
+  <br>
+  <p style="font-size:15px; color:#888;">
+    Conclusão direta: <strong style="color:var(--branco)">o time de pós-vendas não é um centro de custo. É o motor principal de proteção dos lucros — e a fonte mais barata de crescimento orgânico.</strong>
+  </p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- CAP 3 · OS 4 TIPOS DE CLIENTE             -->
+<!-- ══════════════════════════════════════════ -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-num">03</div>
+    <div class="section-info">
+      <div class="tag tag-rosa">Comportamento</div>
+      <h2>Os 4 tipos de cliente <span class="destaque-rosa">que você vai encontrar</span></h2>
+    </div>
+  </div>
+
+  <p>
+    Nem todo cliente satisfeito é fiel. E nem todo cliente que reclama vai embora.
+    O Modelo dos Apóstolos, desenvolvido por pesquisadores da Harvard Business Review,
+    divide a base de clientes em quatro perfis comportamentais — e sua abordagem precisa ser diferente para cada um.
+  </p>
+
+  <div class="apostolo-grid">
+
+    <div class="ap-card ap-apostolo">
+      <span class="ap-tag">Apóstolo</span>
+      <h3 style="color:#7fffaa">Satisfeito e fiel</h3>
+      <p>Renova sem pestanejar, compra coberturas adicionais, indica a família toda. Estudo da Xerox mostrou que clientes nesse nível são <strong style="color:#aaffcc">6 vezes mais propensos</strong> a renovar do que clientes "apenas satisfeitos".</p>
+      <br>
+      <p style="font-size:12px; color:#5c9c6e;"><strong>Sua missão:</strong> nutrir, reconhecer e transformar em fonte ativa de indicações.</p>
+    </div>
+
+    <div class="ap-card ap-mercenario">
+      <span class="ap-tag">Mercenário</span>
+      <h3 style="color:#ffd966">Satisfeito, mas volúvel</h3>
+      <p>Está feliz com o serviço — mas muda para o concorrente se o prêmio cair R$ 30. Lealdade zero. Governa-se pelo preço, não pelo valor.</p>
+      <br>
+      <p style="font-size:12px; color:#8c6c20;"><strong>Sua missão:</strong> mostrar o custo invisível de trocar — e o valor acumulado de continuar.</p>
+    </div>
+
+    <div class="ap-card ap-refem">
+      <span class="ap-tag">Refém</span>
+      <h3 style="color:#d099ff">Preso, mas insatisfeito</h3>
+      <p>Continua pagando — mas por obrigação contratual, não por escolha. Quando surgir uma saída fácil, vai embora sem hesitar. E com raiva acumulada.</p>
+      <br>
+      <p style="font-size:12px; color:#7a4da0;"><strong>Sua missão:</strong> ouvir, resolver as queixas antigas, converter inércia em escolha consciente.</p>
+    </div>
+
+    <div class="ap-card ap-desertor">
+      <span class="ap-tag">Desertor / Terrorista</span>
+      <h3 style="color:#ff9999">Insatisfeito e saindo</h3>
+      <p>Já cancelou ou está na iminência. O perigo: vai contar a história de forma dramática para todo o círculo de contatos. Um cliente assim custa muito mais do que o prêmio perdido.</p>
+      <br>
+      <p style="font-size:12px; color:#a04040;"><strong>Sua missão:</strong> atuar rápido. Mesmo que não retenha, encerrar com dignidade evita o "terrorismo" de imagem.</p>
+    </div>
+
+  </div>
+
+  <div class="divisor"></div>
+
+  <div class="quote-block">
+    <p>A satisfação garantida nas pesquisas não garante lealdade. Um cliente pode estar completamente satisfeito e cancelar a apólice na semana seguinte.</p>
+    <div class="fonte">— Jones & Sasser, Harvard Business Review, 1995</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- CAP 4 · A CADEIA SERVIÇO-LUCRO            -->
+<!-- ══════════════════════════════════════════ -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-num">04</div>
+    <div class="section-info">
+      <div class="tag tag-roxo">Framework</div>
+      <h2>Como seu atendimento <span class="destaque-roxo">vira lucro</span></h2>
+    </div>
+  </div>
+
+  <p>
+    Em 1994, pesquisadores da Harvard Business School publicaram um dos estudos mais citados
+    na gestão de serviços: a <strong style="color:var(--branco)">Cadeia de Valor Serviço-Lucro</strong>.
+    A ideia central é simples — mas poderosa.
+  </p>
+
+  <br>
+  <p>Existe uma cadeia direta e mensurável entre como as pessoas são tratadas <em>dentro</em> de uma empresa e o lucro que ela gera <em>fora</em>. Cada elo importa.</p>
+
+  <div class="cards-grid" style="margin-top: 36px; grid-template-columns: 1fr;">
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0;">
+
+      <div style="background:#1a1a1a; border: 1px solid #2a2a2a; padding: 20px; border-radius: 4px 0 0 0; border-right: none; border-bottom: none;">
+        <div style="font-size:11px; color:var(--verde); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px;">1</div>
+        <h3 style="font-size:15px; margin-bottom:6px; color:var(--branco)">Ambiente interno de qualidade</h3>
+        <p style="font-size:13px; color:#888;">Ferramentas boas, autonomia para resolver, treinamento contínuo e cultura de respeito.</p>
+      </div>
+
+      <div style="background:#1a1a1a; border: 1px solid #2a2a2a; padding: 20px; border-radius: 0; border-right: none; border-bottom: none;">
+        <div style="font-size:11px; color:var(--verde); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px;">2</div>
+        <h3 style="font-size:15px; margin-bottom:6px; color:var(--branco)">Satisfação de quem atende</h3>
+        <p style="font-size:13px; color:#888;">Profissionais que se sentem bem no trabalho entregam um nível radicalmente diferente de atenção.</p>
+      </div>
+
+      <div style="background:#1a1a1a; border: 1px solid #2a2a2a; padding: 20px; border-radius: 0 4px 0 0; border-bottom: none;">
+        <div style="font-size:11px; color:var(--verde); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px;">3</div>
+        <h3 style="font-size:15px; margin-bottom:6px; color:var(--branco)">Lealdade e produtividade</h3>
+        <p style="font-size:13px; color:#888;">Times estáveis erram menos, resolvem mais rápido e custam menos para a empresa no longo prazo.</p>
+      </div>
+
+      <div style="background:#161c16; border: 1px solid #2a2a2a; padding: 20px; border-radius: 0 0 0 4px; border-right: none; border-top: none;">
+        <div style="font-size:11px; color:var(--verde); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px;">4</div>
+        <h3 style="font-size:15px; margin-bottom:6px; color:var(--verde)">Valor real entregue ao cliente</h3>
+        <p style="font-size:13px; color:#888;">Clareza na explicação de apólices. Empatia num momento difícil. Agilidade na resolução. Isso é valor percebido.</p>
+      </div>
+
+      <div style="background:#161c16; border: 1px solid #2a2a2a; padding: 20px; border-top: none; border-right: none;">
+        <div style="font-size:11px; color:var(--verde); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px;">5</div>
+        <h3 style="font-size:15px; margin-bottom:6px; color:var(--verde)">Satisfação genuína do cliente</h3>
+        <p style="font-size:13px; color:#888;">Não a satisfação de pesquisa — a satisfação que faz alguém contar para um amigo.</p>
+      </div>
+
+      <div style="background:#161c16; border: 1px solid #2a2a2a; padding: 20px; border-radius: 0 0 4px 0; border-top: none;">
+        <div style="font-size:11px; color:var(--verde); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px;">6 + 7</div>
+        <h3 style="font-size:15px; margin-bottom:6px; color:var(--verde)">Lealdade → Crescimento</h3>
+        <p style="font-size:13px; color:#888;">Renovações, expansão de coberturas, indicações orgânicas. A empresa cresce sem o custo de aquisição.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <br>
+  <p style="font-size:14px; color:#777;">
+    O investimento da AZOS no seu bem-estar, nas suas ferramentas e na sua autonomia não é gasto — é plantio direto de margem de lucro futuro.
+    Cada vez que você resolve algo com excelência, você aciona essa cadeia inteira.
+  </p>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- CAP 5 · SEUS SUPERPODERES                 -->
+<!-- ══════════════════════════════════════════ -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-num">05</div>
+    <div class="section-info">
+      <div class="tag tag-verde">Na prática</div>
+      <h2>Seus superpoderes <span class="destaque">do dia a dia</span></h2>
+    </div>
+  </div>
+
+  <p>
+    A Superliga CX não é metáfora vazia. Os superpoderes que o time de atendimento carrega
+    são competências reais — com impacto direto em retenção, satisfação e crescimento da carteira.
+    Aqui está o que cada um significa na prática:
+  </p>
+
+  <div class="poder-lista">
+
+    <div class="poder-item">
+      <div class="poder-label">Escuta ativa</div>
+      <div class="poder-texto">Ouvir o que não foi dito. Identificar a emoção por trás da reclamação técnica. É o que transforma uma ligação de cobrança numa oportunidade de reconectar o cliente com o valor da apólice.</div>
+    </div>
+
+    <div class="poder-item">
+      <div class="poder-label">Clareza</div>
+      <div class="poder-texto">Transformar o juridiquês de uma apólice em linguagem humana. Clientes que entendem o que contrataram têm taxas de cancelamento muito menores — porque percebem o valor que já possuem.</div>
+    </div>
+
+    <div class="poder-item roxo">
+      <div class="poder-label">Calma</div>
+      <div class="poder-texto">Desacelerar uma conversa carregada de emoção. No seguro de vida, muitas ligações chegam em momentos de luto, medo ou estresse financeiro. A calma não é passividade — é a habilidade de criar segurança psicológica em tempo real.</div>
+    </div>
+
+    <div class="poder-item roxo">
+      <div class="poder-label">Agilidade</div>
+      <div class="poder-texto">Resolver em poucos minutos o que parecia impossível. Cada minuto a menos no tempo de resolução é percebido diretamente pelo cliente como respeito ao seu tempo e competência da empresa.</div>
+    </div>
+
+    <div class="poder-item rosa">
+      <div class="poder-label">Responsabilidade</div>
+      <div class="poder-texto">Assumir o problema como se fosse seu — mesmo quando não foi você quem criou. Clientes não se lembram de onde surgiu o problema. Se lembram de quem resolveu.</div>
+    </div>
+
+    <div class="poder-item rosa">
+      <div class="poder-label">Resiliência</div>
+      <div class="poder-texto">Chegar no décimo atendimento difícil do dia com a mesma presença do primeiro. Não é sobre fingir que está tudo bem — é sobre manter o compromisso com a qualidade mesmo quando cansa.</div>
+    </div>
+
+  </div>
+
+  <div class="divisor"></div>
+
+  <div class="quote-block">
+    <p>"Excelência também é explicar com calma pela terceira vez."</p>
+    <div class="fonte">— Cards de engajamento da Superliga CX</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- CAP 6 · ENCERRAMENTO                      -->
+<!-- ══════════════════════════════════════════ -->
+<div class="page">
+  <div class="section-header">
+    <div class="section-num">06</div>
+    <div class="section-info">
+      <div class="tag tag-verde">Encerramento</div>
+      <h2>Você <span class="destaque">faz parte</span> da Superliga</h2>
+    </div>
+  </div>
+
+  <p>
+    A história do pós-venda tem 3.000 anos. A matemática da retenção é implacável.
+    Os frameworks acadêmicos são sofisticados. Mas tudo isso converge num único ponto:
+    <strong style="color:var(--branco)">o atendimento humano, de qualidade, feito com intenção, é o ativo mais valioso de qualquer operação de seguros.</strong>
+  </p>
+
+  <br>
+  <p>
+    A Superliga CX foi criada para nomear e celebrar algo que já existe — o compromisso diário
+    do time de CX da AZOS com cada pessoa do outro lado da linha.
+    Os selos são colecionáveis. Os pontos são reais. O reconhecimento é merecido.
+    Mas o que move tudo isso é mais simples:
+  </p>
+
+  <div class="quote-block" style="margin: 32px 0;">
+    <p>Alguém hoje saiu melhor do que entrou. E isso também é excelência.</p>
+    <div class="fonte">— Superliga CX · AZOS</div>
+  </div>
+
+  <div class="encer-grid">
+    <div class="encer-card">
+      <div class="numero">5</div>
+      <p>meses de competição<br>Fev → Jun 2026</p>
+    </div>
+    <div class="encer-card">
+      <div class="numero">3</div>
+      <p>times: Corretor,<br>Segurado e Cobrança</p>
+    </div>
+    <div class="encer-card">
+      <div class="numero">∞</div>
+      <p>impacto de cada<br>atendimento de excelência</p>
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:center; margin-top: 56px;">
+    <div style="width:200px; height:200px; border-radius:50%; background:#111; border: 3px solid var(--verde); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; gap:6px;">
+      <div style="font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--verde)">Superliga CX · AZOS</div>
+      <div style="font-size:17px; font-weight:900; color:var(--branco); line-height:1.2">Selo de<br>Atendimento</div>
+      <div style="font-size:10px; color:var(--cinza)">Performance de<br>Excelência</div>
+    </div>
+  </div>
+
+  <div style="text-align:center; margin-top: 48px;">
+    <p style="font-size:22px; font-weight:700; color:var(--branco)">Atender com empatia.</p>
+    <p style="font-size:22px; font-weight:700; color:var(--verde)">Resolver com excelência.</p>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════ -->
+<!-- AVISO LEGAL / IA                          -->
+<!-- ══════════════════════════════════════════ -->
+<div class="page" style="padding-top: 48px; padding-bottom: 48px;">
+  <div style="background:#161616; border: 1px solid #2c2c2c; border-radius:4px; padding: 28px 32px;">
+    <div class="tag tag-roxo" style="margin-bottom:16px;">Aviso importante</div>
+    <p style="font-size:14px; color:#aaa; line-height:1.8; margin-bottom:16px;">
+      Este material foi elaborado com o auxílio de inteligência artificial (IA) e pode conter imprecisões, simplificações ou erros. <strong style="color:var(--branco)">Recomendamos fortemente a revisão por profissionais qualificados antes de qualquer uso institucional.</strong> As informações aqui presentes têm caráter educativo e de engajamento interno, e não devem ser utilizadas como base para decisões de negócio, estratégias comerciais ou orientações técnicas sem validação prévia.
+    </p>
+    <div class="divisor" style="margin: 20px 0;"></div>
+    <div style="font-size:13px; color:#666; margin-bottom:8px; letter-spacing:0.08em; text-transform:uppercase;">Principais referências consultadas</div>
+    <ul style="list-style:none; display:flex; flex-direction:column; gap:10px; margin-top:12px;">
+      <li style="font-size:13px; color:#888;">
+        <span style="color:var(--verde); margin-right:8px;">→</span>
+        Heskett, J.L. et al. <em style="color:#bbb;">Putting the Service-Profit Chain to Work.</em> Harvard Business Review, 1994.
+        <a href="https://hbr.org/1994/03/putting-the-service-profit-chain-to-work" style="color:var(--roxo); margin-left:6px; font-size:12px;" target="_blank">hbr.org</a>
+      </li>
+      <li style="font-size:13px; color:#888;">
+        <span style="color:var(--verde); margin-right:8px;">→</span>
+        Jones, T.O. & Sasser, W.E. <em style="color:#bbb;">Why Satisfied Customers Defect.</em> Harvard Business Review, 1995.
+        <a href="https://hbr.org/1995/11/why-satisfied-customers-defect" style="color:var(--roxo); margin-left:6px; font-size:12px;" target="_blank">hbr.org</a>
+      </li>
+      <li style="font-size:13px; color:#888;">
+        <span style="color:var(--verde); margin-right:8px;">→</span>
+        Reichheld, F.F. & Sasser, W.E. <em style="color:#bbb;">Zero Defections: Quality Comes to Services.</em> Harvard Business Review, 1990.
+        <a href="https://hbr.org/1990/09/zero-defections-quality-comes-to-services" style="color:var(--roxo); margin-left:6px; font-size:12px;" target="_blank">hbr.org</a>
+      </li>
+      <li style="font-size:13px; color:#888;">
+        <span style="color:var(--verde); margin-right:8px;">→</span>
+        Bain & Company. <em style="color:#bbb;">Prescription for Cutting Costs.</em> Bain & Co., 2001.
+        <a href="https://www.bain.com/insights/prescription-for-cutting-costs-bain-brief/" style="color:var(--roxo); margin-left:6px; font-size:12px;" target="_blank">bain.com</a>
+      </li>
+      <li style="font-size:13px; color:#888;">
+        <span style="color:var(--verde); margin-right:8px;">→</span>
+        Society of Actuaries & LIMRA. <em style="color:#bbb;">U.S. Individual Life Insurance Persistency Study 2015–2021.</em>
+        <a href="https://www.soa.org/resources/research-reports/2022/ind-life-persistency/" style="color:var(--roxo); margin-left:6px; font-size:12px;" target="_blank">soa.org</a>
+      </li>
+      <li style="font-size:13px; color:#888;">
+        <span style="color:var(--verde); margin-right:8px;">→</span>
+        J.D. Power. <em style="color:#bbb;">U.S. Life Insurance Study.</em> Relatório anual de satisfação e engajamento no setor de seguros.
+        <a href="https://www.jdpower.com/business/insurance/life-insurance-study" style="color:var(--roxo); margin-left:6px; font-size:12px;" target="_blank">jdpower.com</a>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="rodape" style="max-width:860px; margin:0 auto; padding: 20px 48px; display:flex; justify-content:space-between; align-items:center; border-top: 1px solid #1e1e1e;">
+  <span class="azos-logo" style="font-size:13px;">AZOS</span>
+  <span style="font-size:11px; color:#444; letter-spacing:0.06em;">azos.com.br · Material interno · Time CX · 2026</span>
+</div>
+
+</body>
+</html>
